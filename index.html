@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Discord</title>
+</head>
+<body>
+  <button id="join">Join Voice</button>
+
+  <script>
+    const btn = document.getElementById("join");
+
+    btn.onclick = async () => {
+      const ws = new WebSocket("wss://cf40928d-4e1b-4a49-8ab5-0dae86bad1df-00-2m1ke03n5wutj.spock.replit.dev:4200");
+      ws.binaryType = "arraybuffer";
+      ws.onopen = () => {
+        ws.send(JSON.stringify({ cmd: "set", room: "room3" }));
+      }
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const context = new AudioContext();
+      const source = context.createMediaStreamSource(stream);
+      const processor = context.createScriptProcessor(2048, 1, 1);
+
+      source.connect(processor);
+      processor.connect(context.destination);
+
+      processor.onaudioprocess = e => {
+        const input = e.inputBuffer.getChannelData(0);
+        const buffer = new ArrayBuffer(input.length * 2);
+        const view = new DataView(buffer);
+        for (let i = 0; i < input.length; i++) {
+          view.setInt16(i * 2, input[i] * 32767, true);
+        }
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(buffer);
+        }
+      };
+
+      // Odtwarzanie audio od innych
+      const speaker = context.createScriptProcessor(2048, 1, 1);
+      speaker.connect(context.destination);
+
+      let audioQueue = [];
+
+      ws.onmessage = (msg) => {
+        audioQueue.push(new Int16Array(msg.data));
+      };
+
+      speaker.onaudioprocess = (e) => {
+        const output = e.outputBuffer.getChannelData(0);
+        if (audioQueue.length > 0) {
+          const buffer = audioQueue.shift();
+          for (let i = 0; i < buffer.length; i++) {
+            output[i] = buffer[i] / 32767;
+          }
+        } else {
+          output.fill(0);
+        }
+      };
+    };
+  </script>
+</body>
+</html>
