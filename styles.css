@@ -1,0 +1,52 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+  background-size: 100000% 100000%;
+  animation: rainbow 50s linear infinite;
+}
+#text_username {
+  color: white;
+  text-shadow: 5px 5px 20px rgba(255, 255, 255, 0.4);
+  position: absolute;
+  top: -1%;
+  left:50%;
+  transform: translate(-50%,-1%);
+}
+#text {
+  display:none;
+  text-shadow: 5px 5px 20px rgba(255, 255, 255, 0.4);
+  font-size: 700%;
+  color: white;
+  position: absolute;
+  left:50%;
+  transform: translate(-50%,-0%)
+}
+#join {
+  background-color: #43fe49;
+  color: white;
+  font-family: Arial, sans-serif;
+  border: none; /* zamiast border: 30px (to nieprawidłowe) */
+  border-radius: 2px; /* jeśli chciałeś zaokrąglenie */
+  height: 20vh;
+  width: 70vh;
+  font-size: 600%;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4); /* zwiększona przejrzystość */
+  cursor: pointer; /* dla lepszego UX */
+}
+
+@keyframes rainbow {
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
+}
