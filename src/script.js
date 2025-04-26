@@ -9,7 +9,7 @@
       // Get the values of specific parameters
       const query = params.get("token");
       fetch(
-        "https://cf40928d-4e1b-4a49-8ab5-0dae86bad1df-00-2m1ke03n5wutj.spock.replit.dev:3001/api/gettoken?token=" +
+        "https://robloxapi-wzzv.onrender.com/api/gettoken?token=" +
           encodeURIComponent(query),
       )
         .then((res) => {
@@ -29,7 +29,7 @@
 
       btn.onclick = async () => {
         const ws = new WebSocket(
-          "wss://cf40928d-4e1b-4a49-8ab5-0dae86bad1df-00-2m1ke03n5wutj.spock.replit.dev:4200",
+          "wss://robloxapi-wzzv.onrender.com:4000",
         );
         ws.binaryType = "arraybuffer";
         ws.onopen = () => {
